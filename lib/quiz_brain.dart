@@ -1,7 +1,9 @@
 import 'package:quizzler_flutter/question.dart';
 
 class QuizBrain {
-  List<Question> questions = [
+  int currentQuestionIndex = 0;
+
+  final List<Question> _questions = [
     Question('Some cats are actually allergic to humans', true),
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
@@ -28,4 +30,19 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+
+  String getQuestionText() {
+    return _questions[currentQuestionIndex].questionText;
+  }
+
+  bool getQuestionAnswer() {
+    return _questions[currentQuestionIndex].questionAnswer;
+  }
+
+  void nextQuestion() {
+    if (currentQuestionIndex < _questions.length - 1) {
+      //it is safe to go to the next question
+      currentQuestionIndex++;
+    }
+  }
 }
