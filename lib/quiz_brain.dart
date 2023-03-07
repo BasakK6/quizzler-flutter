@@ -45,4 +45,12 @@ class QuizBrain {
       currentQuestionIndex++;
     }
   }
+
+  bool isFinished(){
+    return currentQuestionIndex == _questions.length - 1;
+  }
+
+  void reset(){
+    currentQuestionIndex = 0;
+  }
 }

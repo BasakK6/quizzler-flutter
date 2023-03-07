@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler_flutter/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -37,20 +38,44 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
     setState(() {
-      if (correctAnswer == userPickedAnswer) {
-        scoreKeeper.add(const Icon(
-          Icons.check,
-          color: Colors.green,
-        ));
-      } else {
-        scoreKeeper.add(const Icon(
-          Icons.cancel,
-          color: Colors.red,
-        ));
-      }
+      if (quizBrain.isFinished()) {
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "Finished!",
+          desc: "You've reached the end of the quiz",
+          buttons: [
+            DialogButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              width: 120,
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ],
+        ).show();
 
-      //increase the current question index
-      quizBrain.nextQuestion();
+        quizBrain.reset();
+        scoreKeeper.clear();
+      } else {
+        if (correctAnswer == userPickedAnswer) {
+          scoreKeeper.add(const Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scoreKeeper.add(const Icon(
+            Icons.cancel,
+            color: Colors.red,
+          ));
+        }
+
+        //increase the current question index
+        quizBrain.nextQuestion();
+      }
     });
   }
 
