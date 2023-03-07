@@ -34,8 +34,22 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  void increaseCurrentQuestionIndex(){
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
     setState(() {
+      if (correctAnswer == userPickedAnswer) {
+        scoreKeeper.add(const Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        scoreKeeper.add(const Icon(
+          Icons.cancel,
+          color: Colors.red,
+        ));
+      }
+
+      //increase the current question index
       quizBrain.nextQuestion();
     });
   }
@@ -46,7 +60,7 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-         Expanded(
+        Expanded(
           flex: 5,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -75,11 +89,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if(correctAnswer == true){
-                  print("Got it right");
-                }
-                increaseCurrentQuestionIndex();
+                checkAnswer(true);
               },
             ),
           ),
@@ -97,11 +107,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if(correctAnswer == false){
-                  print("Got it right");
-                }
-                increaseCurrentQuestionIndex();
+                checkAnswer(false);
               },
             ),
           ),
